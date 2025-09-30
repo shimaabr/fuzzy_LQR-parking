@@ -71,17 +71,17 @@ The controller uses **two inputs**:
 2. `error_theta` – the heading (yaw) error, range: [-0.5236, 0.5236]  
 
 Each input has **5 membership functions**:  
-- `NL` = Negative Large  
-- `NS` = Negative Small  
-- `Z`  = Zero  
-- `PS` = Positive Small  
-- `PL` = Positive Large  
+- `VL` = very large 
+- `L` = large 
+- `M`  = medium  
+- `S` = Small  
+- `VS` = very small
 
 And outputs are the LQR weights:  
 -`R` – weight for control input, range: [0.1, 10]  
 -`Q` – weight for state error, range: [10, 100]  
 
-Each output also has **5 membership functions**: NL, NS, Z, PS, PL.
+Each output also has **5 membership functions**: VL,L,M,S,VS.
 
 
 And it has 25 rules as follow :
@@ -183,7 +183,8 @@ Using the Fuzzy Logic Controller and/or LQR, the vehicle gradually approaches th
 
 Over time, both x and y converge to 2, showing that the parking control works correctly.
 
-<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/4cf3034f-14f4-4a53-a286-e57589ac0f3d" />
+![Uploading image.png…]()
+
 
 <img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/add4db21-bd14-4e17-a32e-0d86e0b18c43" />
 
@@ -193,6 +194,29 @@ and its the out put of fuzzy
 
 
 <img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/3e274e55-6caa-4307-b3f2-83f3b346aea7" />
+
+
+## compare with pure LQR
+
+in simulink and     i use simple LQR to see how it became better LQR wiyh Q =10* eye(5) and 
+    R = .1*eye(2); 
+
+the final x and y of Fuzzy_LQR 
+
+x_final =2.028
+
+y_final=1.863
+
+theta_final =.4276
+
+for pure LQR final x y and theta is 
+
+x_final=2.053
+
+y_final =1.738
+
+theta_final =.3898 
+
 
 
 
