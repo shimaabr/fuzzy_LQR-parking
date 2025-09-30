@@ -185,12 +185,14 @@ Over time, both x and y converge to 2, showing that the parking control works co
 
 <img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/4cf3034f-14f4-4a53-a286-e57589ac0f3d" />
 
-<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/6167b7fa-29df-4521-a614-9f86f1269801" />
+<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/add4db21-bd14-4e17-a32e-0d86e0b18c43" />
+
 
 
 and its the out put of fuzzy 
 
-<img width="875" height="619" alt="image" src="https://github.com/user-attachments/assets/a89ea88c-7525-4ff9-8885-0d487d7be877" />
+
+<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/3e274e55-6caa-4307-b3f2-83f3b346aea7" />
 
 
 
