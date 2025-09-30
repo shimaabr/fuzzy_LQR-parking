@@ -167,9 +167,6 @@ the refrence point is
  theta0 = 1  
   phi0=0;
 
-## simulink 
-I implement it in simulink matlab use fuzzy toolbox                  and           code for LQR controller
-
 
 ## result 
 
@@ -229,6 +226,12 @@ Pure LQR   theta_error: 0.3898 rad ≈ 22.3°
 Pure LQR has slightly better orientation accuracy (≈ 2° improvement).
 
 Since precise position is usually more crucial in vehicle parking , **Fuzzy-LQR is the better choice overall.
+
+# How to Run
+1. Open `parking.slx` in Simulink.  
+2. Run the simulation with `car.m` for Fuzzy-LQR or `car_LQR.m` for standard LQR.
+3. The fuzzy logic system is saved in **`parking.fis`**. Make sure this file is in the same folder as `parking.slx`  before running the simulations. This ensures that MATLAB/Simulink can correctly load the fuzzy rules for adaptive Q/R tuning.
+
 
 
 
