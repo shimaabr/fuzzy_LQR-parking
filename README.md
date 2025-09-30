@@ -181,41 +181,59 @@ The vehicle’s current position (x, y) starts from(0,0) cause i set initial x a
 
 Using the Fuzzy Logic Controller and/or LQR, the vehicle gradually approaches the target.
 
-Over time, both x and y converge to 2, showing that the parking control works correctly.
+Over time, both x and y converge to 2 and theta converge to 0 , showing that the parking control works correctly.
 
-![Uploading image.png…]()
-
-
-<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/add4db21-bd14-4e17-a32e-0d86e0b18c43" />
+<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/72a1f2c0-9c88-430d-aa7e-e68942d1b9f9" />
 
 
-
-and its the out put of fuzzy 
-
-
-<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/3e274e55-6caa-4307-b3f2-83f3b346aea7" />
+<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/554c0a2c-e279-4dc3-9a7d-dcb6744b4270" />
 
 
-## compare with pure LQR
 
-in simulink and     i use simple LQR to see how it became better LQR wiyh Q =10* eye(5) and 
-    R = .1*eye(2); 
 
-the final x and y of Fuzzy_LQR 
 
-x_final =2.028
 
-y_final=1.863
 
-theta_final =.4276
+## Comparison: Fuzzy-LQR vs. Pure LQR
 
-for pure LQR final x y and theta is 
+We compare the performance of **Fuzzy-LQR** with a **pure LQR controller**  
+(using `Q = 10*eye(5)` and `R = 0.1*eye(2)`).
 
-x_final=2.053
+The reference target is:
 
-y_final =1.738
+Final Results
 
-theta_final =.3898 
+| Controller  | x_final | y_final | theta_final (rad) | theta_final (deg) |
+|-------------|---------|---------|-------------------|-------------------|
+| Fuzzy-LQR   | 2.028   | 1.863   | 0.4276            | 24.5°             |
+| Pure LQR    | 2.053   | 1.738   | 0.3898            | 22.3°             |
+
+
+
+ Position Error
+Fuzzy-LQR:
+error_x = 0.028 , error_y = -0.137
+error_pos ≈ sqrt(0.028^2 + 0.137^2) = 0.14 m
+
+Pure LQR:
+error_x = 0.053 , error_y = -0.262
+error_pos ≈ sqrt(0.053^2 + 0.262^2) = 0.27 m
+
+
+Fuzzy-LQR reduces the position error by almost half compared to Pure LQR.
+
+
+Fuzzy-LQR  theta_error: 0.4276 rad ≈ 24.5°
+Pure LQR   theta_error: 0.3898 rad ≈ 22.3°
+
+Pure LQR has slightly better orientation accuracy (≈ 2° improvement).
+
+Since precise position is usually more crucial in vehicle parking , **Fuzzy-LQR is the better choice overall.
+
+
+
+
+
 
 
 
