@@ -7,7 +7,7 @@ The system uses a bicycle model to represent vehicle dynamics with the state vec
 The key feature of this controller is that the LQR weighting matrices Q and R are adaptively tuned using a fuzzy logic system.
 This allows the controller to handle nonlinearities and different parking scenarios more effectively compared to a standard LQR.
 
-# Dynamic System Model
+## Dynamic System Model
 
 In this project I use a simplified model like a motorcycle. The dynamics of the system are as follows:
 
