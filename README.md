@@ -128,6 +128,73 @@ R represents the strength or intensity of the control action.
 
 When the error is small, R is large → system gives smooth and gentle control.
 
+### LQR Controller
+**LQR (Linear Quadratic Regulator)** computes optimal control inputs for linear or linearized systems.
+- Minimizes **tracking error** and **control effort** simultaneously
+
+and cause motor bicycle has Nonlinear kinematics so Linearized  it around reference point
+
+\[
+\dot{x} = A x + B u
+\]
+
+
+We computed the **Jacobian matrices** with respect to the states and inputs:  
+
+- **State Jacobian** → gives matrix \(A\)  
+- **Input Jacobian** → gives matrix \(B\)
+
+A matrix:
+\[
+A = 
+A = [ 
+  0, 0, -v0*sin(theta0), 0, cos(theta0); 
+  0, 0,  v0*cos(theta0), 0, sin(theta0); 
+  0, 0, 0, (v0/L)*(1/cos(phi0)^2), tan(phi0)/L; 
+  0, 0, 0, 0, 0; 
+  0, 0, 0, 0, 0 
+]
+
+ B = [0 0;
+         0 0;
+         0 0;
+         0 1;
+         1 0];
+
+the refrence point is 
+
+ v0 = 1;       
+ theta0 = 1  
+  phi0=0;
+
+## simulink 
+I implement it in simulink matlab use fuzzy toolbox                  and           code for LQR controller
+
+
+## result 
+
+In this example, the target position for parking is set as:
+
+x_target = 2, y_target = 2
+
+The vehicle’s current position (x, y) starts from(0,0) cause i set initial x and y in integrated block to 0 and moves toward the target.
+
+Using the Fuzzy Logic Controller and/or LQR, the vehicle gradually approaches the target.
+
+Over time, both x and y converge to 2, showing that the parking control works correctly.
+
+<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/4cf3034f-14f4-4a53-a286-e57589ac0f3d" />
+
+<img width="481" height="393" alt="image" src="https://github.com/user-attachments/assets/6167b7fa-29df-4521-a614-9f86f1269801" />
+
+
+and its the out put of fuzzy 
+
+<img width="875" height="619" alt="image" src="https://github.com/user-attachments/assets/a89ea88c-7525-4ff9-8885-0d487d7be877" />
+
+
+
+
 
 
 
