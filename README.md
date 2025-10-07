@@ -261,7 +261,8 @@ it is better now but not enough so i changed Q_defualt again to bellow to reduce
 
 in this condition final_x=1.942     final_y=2.044    final_theta=.02711  which means the motorbike has an accepteble orientation and position accuracy
 
-<img idth="497" height="400" alt="image" src="https://github.com/user-attachments/assets/3ceb5632-6736-4ad2-8e12-dcdaa184b08e" />
+<img width="497" height="400" alt="image" src="https://github.com/user-attachments/assets/d3ff89c0-6c88-498d-8d94-f03cf29acabb" />
+
 <img width="497" height="400" alt="image" src="https://github.com/user-attachments/assets/17c2aa95-2b27-4815-99c9-8509a9c63e67" />
 
 
