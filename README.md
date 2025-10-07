@@ -78,8 +78,8 @@ Each input has **5 membership functions**:
 - `NL` = negetive large
 
 And outputs are the LQR scalor weight Q0 and R0:  
--`R` – weight for control input, range: [0.1, 10]  
--`Q` – weight for state error, range: [1,30]  
+-`R` – weight for control input, range: [0.1, 2]  
+-`Q` – weight for state error, range: [1,100]  
 
 Each output also has **5 membership functions**: VL,L,M,S,VS.( very large, large, medium, small, very small)
 
@@ -221,8 +221,8 @@ B = [  0,  0;
 
     % Control input
      u = -K * e;
-    u(1) = max(min(u(1), .53), -.53); % فرمان
-    u(2) = max(min(u(2), 1), 0);     % شتاب
+    u(1) = max(min(u(1), .53), -.53); 
+    u(2) = max(min(u(2), 1), 0);    
     
      end
 
@@ -241,46 +241,67 @@ x_target = 2, y_target = 2 theta=0
 The vehicle’s current position (x, y,theta,v,phi) starts from(0,0,.3,.5,0) cause i set initial integrated block for them as followes.
 
 
-## result of fuzzy_LQR
+final_x=2.557  final_y=.9826   final_theta=.4406
 
-final_x=2.651  final_y=   final_theta=
+it doesnt work well for y and theta so i give more weight for Q of y and theta 
+i changed Q_ defualt to 
+    Q_default =[1 0 0 0 0
+                0 50 0 0 0 
+                0 0 50 0 0 
+                0 0 0 1 0 
+                0 0 0 0 1];   %  for 5 states 
+ the result was final_x=1.695  final_y=1.279  final_theta=.3895
+
+it is better now but not enough so i changed Q_defualt again to bellow to reduce specially error of theta 
+    Q_default =[1 0 0 0 0
+                0 50 0 0 0 
+                0 0 100 0 0 
+                0 0 0 1 0 
+                0 0 0 0 1];   %  for 5 states
+
+in this condition final_x=1.942     final_y=2.044    final_theta=.02711  which means the motorbike has an accepteble orientation and position accuracy
+
+<img idth="497" height="400" alt="image" src="https://github.com/user-attachments/assets/3ceb5632-6736-4ad2-8e12-dcdaa184b08e" />
+<img width="497" height="400" alt="image" src="https://github.com/user-attachments/assets/17c2aa95-2b27-4815-99c9-8509a9c63e67" />
+
+
+
+
 
 ## Comparison: Fuzzy-LQR vs. Pure LQR
 
-We compare the performance of **Fuzzy-LQR** with a **pure LQR controller**  
-(using `Q = 10*eye(5)` and `R = 0.1*eye(2)`).
-
-The reference target is:
+TO compare the performance of **Fuzzy-LQR** with a **pure LQR controller**  
+I made a pure LQR controller for system and only use default Q and R whithout fuzzy weight inorder to find the influence of fuzzy weight
+ and every other thing in this controller remained the same
 
 Final Results
 
 | Controller  | x_final | y_final | theta_final (rad) | theta_final (deg) |
 |-------------|---------|---------|-------------------|-------------------|
-| Fuzzy-LQR   | 2.06   | 1.704   | 0.4276            | 24.5°             |11
-| Pure LQR    | 2.053   | 1.738   | 0.3898            | 22.3°             |
+| Fuzzy-LQR   | 1.942   | 2.044   | 0.0277            | 1.587°            |
+| Pure LQR    | 3.145   | 1.566   | 0.197             | 11.28°            |
 
 
 
  Position Error
 Fuzzy-LQR:
-error_x = 0.028 , error_y = -0.137
-error_pos ≈ sqrt(0.028^2 + 0.137^2) = 0.14 m
+error_x = -0.058 , error_y = .044
+error_pos ≈ sqrt(0.028^2 + 0.137^2) = 0.072 m
 
 Pure LQR:
-error_x = 0.053 , error_y = -0.262
-error_pos ≈ sqrt(0.053^2 + 0.262^2) = 0.27 m
+error_x = 1.145, error_y = .434
+error_pos ≈ sqrt(0.053^2 + 0.262^2) = 1.22 m
 
 
-Fuzzy-LQR reduces the position error by almost half compared to Pure LQR.
+Fuzzy-LQR reduces the position error by almost 1/16 compared to Pure LQR.
 
 
-Fuzzy-LQR  theta_error: 0.4276 rad ≈ 24.5°
-Pure LQR   theta_error: 0.3898 rad ≈ 22.3°
+Fuzzy-LQR  theta_error: 0.4276 rad ≈ 1.587°
+Pure LQR   theta_error: 0.3898 rad ≈ 11.28°
 
-Pure LQR has slightly better orientation accuracy (≈ 2° improvement).
+fuzzy_LQR  highly improve orientation accuracy 
 
-Since precise position is usually more crucial in vehicle parking , **Fuzzy-LQR is the better choice overall.
-
+Overall it is obvious that Fuzzy_LQR controller is more practical
 # How to Run
 1. Open `parking.slx` in Simulink.  
 2. Run the simulation with `car.m` for Fuzzy-LQR or `car_LQR.m` for standard LQR.
