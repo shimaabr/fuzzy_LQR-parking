@@ -286,11 +286,11 @@ Final Results
  Position Error
 Fuzzy-LQR:
 error_x = -0.058 , error_y = .044
-error_pos ≈ sqrt(0.028^2 + 0.137^2) = 0.072 m
+error_pos ≈ sqrt(0.058^2 + 0..044^2) = 0.072 m
 
 Pure LQR:
 error_x = 1.145, error_y = .434
-error_pos ≈ sqrt(0.053^2 + 0.262^2) = 1.22 m
+error_pos  = 1.22 m
 
 
 Fuzzy-LQR reduces the position error by almost 1/16 compared to Pure LQR.
