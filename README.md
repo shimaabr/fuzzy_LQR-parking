@@ -170,7 +170,7 @@ A = [
          0 1;
          1 0];
 
-and get v0 and theta0 and phi0 as follow
+and  v0 and theta0 and phi0 are as follow
    v0 = state(5);
      theta0 = state(3);
      phi0 = state(4);
@@ -178,9 +178,9 @@ and get v0 and theta0 and phi0 as follow
 
 ``matlab
 
- function u = car(state, R_fuzzy, Q_fuzzy,state_ref)
+    function u = car(state, R_fuzzy, Q_fuzzy,state_ref)
     %% Parameters
-    L = 2.5;       % wheelbase [m]
+      L = 2.5;       % wheelbase [m]
     
      v0 = state(5);
      theta0 = state(3);
@@ -190,13 +190,13 @@ and get v0 and theta0 and phi0 as follow
     %% Linearized system around (theta, v)
   
 
-A = [  0,  0, -v0*sin(theta0),           0,             cos(theta0);
+      A = [  0,  0, -v0*sin(theta0),           0,             cos(theta0);
        0,  0,  v0*cos(theta0),           0,             sin(theta0);
        0,  0,          0,   (v0/L)*(1/cos(phi0)^2),     (1/L)*tan(phi0);
        0,  0,          0,               0,                     0;
        0,  0,          0,               0,                     0 ];
 
-B = [  0,  0;
+       B = [  0,  0;
        0,  0;
        0,  0;
        0,  1;
