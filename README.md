@@ -67,56 +67,60 @@ I used a **Fuzzy Controller** to find the best  scolar values for `Q` and `R`, w
 This allows the controller to adapt based on the current position and heading errors of the vehicle.  
 
 The controller uses **two inputs**:  
-1. `error_x` – the longitudinal position error, range: [0, 3]  
-2. `error_theta` – the heading (yaw) error, range: [0,.53]  
+1. `error_x` – the longitudinal position error, range: [-3, 3]  
+2. `error_theta` – the heading (yaw) error, range: [-0.7854 0.7854] 
 
 Each input has **5 membership functions**:  
-- `VL` = very large 
-- `L` = large 
-- `M`  = medium  
-- `S` = Small  
-- `VS` = very small
+- `PL` = positive larege
+- `ps` = positive small
+- `z`  = zero  
+- `NS` = negetive small   
+- `NL` = negetive large
 
 And outputs are the LQR scalor weight Q0 and R0:  
 -`R` – weight for control input, range: [0.1, 10]  
--`Q` – weight for state error, range: [10, 100]  
+-`Q` – weight for state error, range: [1,30]  
 
-Each output also has **5 membership functions**: VL,L,M,S,VS.
+Each output also has **5 membership functions**: VL,L,M,S,VS.( very large, large, medium, small, very small)
 
 
 And it has 25 rules as follow :
 
 Rules Table
 
-| Rule | errorx | error_theta | R  | Q  |
-|------|--------|-------------|----|----|
-| 1    | VS     | VS          | VL | VS |
-| 2    | VS     | S           | L  | S  |
-| 3    | VS     | M           | M  | M  |
-| 4    | VS     | L           | S  | L  |
-| 5    | VS     | VL          | VS | VL |
-| 6    | S      | VS          | L  | S  |
-| 7    | S      | S           | M  | M  |
-| 8    | S      | M           | S  | L  |
-| 9    | S      | L           | VS | VL |
-| 10   | S      | VL          | VS | VL |
-| 11   | M      | VS          | M  | M  |
-| 12   | M      | S           | S  | L  |
-| 13   | M      | M           | S  | M  |
-| 14   | M      | L           | VS | L  |
-| 15   | M      | VL          | VS | VL |
-| 16   | L      | VS          | S  | L  |
-| 17   | L      | S           | S  | M  |
-| 18   | L      | M           | VS | L  |
-| 19   | L      | L           | VS | VL |
-| 20   | L      | VL          | VS | VL |
-| 21   | VL     | VS          | VS | VL |
-| 22   | VL     | S           | VS | VL |
-| 23   | VL     | M           | VS | VL |
-| 24   | VL     | L           | VS | VL |
-| 25   | VL     | VL          | VS | VL |
+## Fuzzy Rules for Adaptive LQR
 
-Q
+The controller uses 25 fuzzy rules to map the inputs (`error_x` and `error_theta`) to outputs (`R` and `Q`).  
+Below is a detailed table with meanings of each input and output:
+
+| Rule | error_x (position) | error_theta (heading) | R (control weight) | Q (state weight) |
+|------|------------------|---------------------|------------------|----------------|
+| 1    | PL               | PL                  | VS               | VL             |
+| 2    | PL               | PS                  | L                | L              |
+| 3    | PL               | Z                   | M                | M              |
+| 4    | PL               | NS                  | M                | L              |
+| 5    | PL               | NL                  | L                | VL             |
+| 6    | PS               | PL                  | L                | L              |
+| 7    | PS               | PS                  | M                | M              |
+| 8    | PS               | Z                   | S                | L              |
+| 9    | PS               | NS                  | VS               | VL             |
+| 10   | PS               | NL                  | VS               | VL             |
+| 11   | Z                | PL                  | M                | M              |
+| 12   | Z                | PS                  | S                | L              |
+| 13   | Z                | Z                   | S                | M              |
+| 14   | Z                | NS                  | VS               | L              |
+| 15   | Z                | NL                  | VS               | VL             |
+| 16   | NS               | PL                  | S                | L              |
+| 17   | NS               | PS                  | S                | M              |
+| 18   | NS               | Z                   | VS               | L              |
+| 19   | NS               | NS                  | VS               | VL             |
+| 20   | NS               | NL                  | VS               | VL             |
+| 21   | NL               | PL                  | VS               | VL             |
+| 22   | NL               | PS                  | VS               | VL             |
+| 23   | NL               | Z                   | VS               | VL             |
+| 24   | NL               | NS                  | VS               | VL             |
+| 25   | NL               | NL                  | VS               | VL             |
+
 
 Q represents the system’s sensitivity to errors.
 
@@ -132,14 +136,14 @@ When the error is small, R is large → system gives smooth and gentle control.
 **LQR (Linear Quadratic Regulator)** computes optimal control inputs for linear or linearized systems.
 - Minimizes **tracking error** and **control effort** simultaneously
 
-and cause motor bicycle has Nonlinear kinematics so Linearized  it around reference point
+and cause motor bicycle has Nonlinear kinematics so we should linerize it
 
 \[
 \dot{x} = A x + B u
 \]
 
 
-We computed the **Jacobian matrices** with respect to the states and inputs:  
+I computed the **Jacobian matrices** with respect to the states and inputs:  
 
 - **State Jacobian** → gives matrix \(A\)  
 - **Input Jacobian** → gives matrix \(B\)
@@ -166,8 +170,64 @@ A = [
          0 1;
          1 0];
 
-code for LQR
-`matlab
+and get v0 and theta0 and phi0 as follow
+   v0 = state(5);
+     theta0 = state(3);
+     phi0 = state(4);
+    phi0 = max(min(phi0, pi/6), -pi/6);
+
+``matlab
+
+ function u = car(state, R_fuzzy, Q_fuzzy,state_ref)
+    %% Parameters
+    L = 2.5;       % wheelbase [m]
+    
+     v0 = state(5);
+     theta0 = state(3);
+     phi0 = state(4);
+    phi0 = max(min(phi0, pi/6), -pi/6);
+
+    %% Linearized system around (theta, v)
+  
+
+A = [  0,  0, -v0*sin(theta0),           0,             cos(theta0);
+       0,  0,  v0*cos(theta0),           0,             sin(theta0);
+       0,  0,          0,   (v0/L)*(1/cos(phi0)^2),     (1/L)*tan(phi0);
+       0,  0,          0,               0,                     0;
+       0,  0,          0,               0,                     0 ];
+
+B = [  0,  0;
+       0,  0;
+       0,  0;
+       0,  1;
+       1,  0 ];
+
+
+    %%  Q and R default
+    Q_default = eye(5);   %  for 5 states
+    R_default = eye(2);   %  2 inputs
+
+    %% Adaptive scaling from fuzzy outputs
+    Q_new = Q_fuzzy * Q_default;
+    R_new = R_fuzzy * R_default;
+
+     %% Solve LQR safely
+        K = lqr(A, B, Q_new, R_new);
+   
+
+
+    % Error state
+    e = state - state_ref;
+
+    % Control input
+     u = -K * e;
+    u(1) = max(min(u(1), .53), -.53); % فرمان
+    u(2) = max(min(u(2), 1), 0);     % شتاب
+    
+     end
+
+ 
+
 
  
 
@@ -176,18 +236,14 @@ code for LQR
 
 In this example, the target position for parking is set as:
 
-x_target = 2, y_target = 2
+x_target = 2, y_target = 2 theta=0
 
-The vehicle’s current position (x, y) starts from(0,0) cause i set initial x and y in integrated block to 0 and moves toward the target.
+The vehicle’s current position (x, y,theta,v,phi) starts from(0,0,.3,.5,0) cause i set initial integrated block for them as followes.
 
-Using the Fuzzy Logic Controller and/or LQR, the vehicle gradually approaches the target.
 
-as we can see the final x=2.028 y=1.946 and theta=.4956
+## result of fuzzy_LQR
 
-so error x=.011 and y=.054 which are acceptebale and show it works well for posision tracking but theta=.4956 rad =28.41 deg  so i change value Q_default in car.m matlab code to weight more to error of Theta so 
-
-  Q_default = eye(5); %  for 5 states
-
+final_x=2.651  final_y=   final_theta=
 
 ## Comparison: Fuzzy-LQR vs. Pure LQR
 
