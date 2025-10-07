@@ -67,7 +67,7 @@ I used a **Fuzzy Controller** to find the best  scolar values for `Q` and `R`, w
 This allows the controller to adapt based on the current position and heading errors of the vehicle.  
 
 The controller uses **two inputs**:  
-1. `error_x` – the longitudinal position error, range: [0, 10]  
+1. `error_x` – the longitudinal position error, range: [0, 3]  
 2. `error_theta` – the heading (yaw) error, range: [0,.53]  
 
 Each input has **5 membership functions**:  
@@ -178,7 +178,7 @@ The vehicle’s current position (x, y) starts from(0,0) cause i set initial x a
 
 Using the Fuzzy Logic Controller and/or LQR, the vehicle gradually approaches the target.
 
-as we can see the final x=2.011 y=1.946 and theta=.4956
+as we can see the final x=2.028 y=1.946 and theta=.4956
 
 so error x=.011 and y=.054 which are acceptebale and show it works well for posision tracking but theta=.4956 rad =28.41 deg  so i change value Q_default in car.m matlab code to weight more to error of Theta so 
 
@@ -200,8 +200,8 @@ Final Results
 
 | Controller  | x_final | y_final | theta_final (rad) | theta_final (deg) |
 |-------------|---------|---------|-------------------|-------------------|
-| Fuzzy-LQR   | 2.011   | 1.863   | 0.4276            | 24.5°             |11
-| Pure LQR    | 2.0   | 1.738   | 0.3898            | 22.3°             |
+| Fuzzy-LQR   | 2.06   | 1.704   | 0.4276            | 24.5°             |11
+| Pure LQR    | 2.053   | 1.738   | 0.3898            | 22.3°             |
 
 
 
