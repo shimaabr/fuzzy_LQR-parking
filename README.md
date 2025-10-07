@@ -149,23 +149,27 @@ A matrix:
 A = 
 A = [ 
   0, 0, -v0*sin(theta0), 0, cos(theta0); 
+  
   0, 0,  v0*cos(theta0), 0, sin(theta0); 
+  
   0, 0, 0, (v0/L)*(1/cos(phi0)^2), tan(phi0)/L; 
+  
   0, 0, 0, 0, 0; 
+  
   0, 0, 0, 0, 0 
 ]
 
- B = [0 0;
+ B = [
+         0 0;
          0 0;
          0 0;
          0 1;
          1 0];
 
-the refrence point is 
+code for LQR
+`matlab
 
- v0 = 1;       
- theta0 = 1  
-  phi0=0;
+ 
 
 
 ## result 
@@ -182,11 +186,7 @@ as we can see the final x=2.028 y=1.946 and theta=.4956
 
 so error x=.011 and y=.054 which are acceptebale and show it works well for posision tracking but theta=.4956 rad =28.41 deg  so i change value Q_default in car.m matlab code to weight more to error of Theta so 
 
-  Q_default = [1 0 0 0 0
-                 0 1 0 0 0
-                 0 0 10 0 0
-                 0 0 0 1 0
-                 0 0 0 0 1];   %  for 5 states
+  Q_default = eye(5); %  for 5 states
 
 
 ## Comparison: Fuzzy-LQR vs. Pure LQR
