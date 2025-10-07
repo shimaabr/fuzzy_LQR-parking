@@ -63,12 +63,12 @@ A**Fuzzy Controller** is a smart control system that works like human thinking.
 It does not need exact math equations.  
 Instead, it uses simple rules, for example: "If speed is high, slow down."
 
-I used a **Fuzzy Controller** to find the best values for `Q` and `R`, which are the weights for the state error and control input in the LQR.  
+I used a **Fuzzy Controller** to find the best  scolar values for `Q` and `R`, which are the weights for the state error and control input in the LQR.  
 This allows the controller to adapt based on the current position and heading errors of the vehicle.  
 
 The controller uses **two inputs**:  
-1. `error_x` – the longitudinal position error, range: [-10, 10]  
-2. `error_theta` – the heading (yaw) error, range: [-0.5236, 0.5236]  
+1. `error_x` – the longitudinal position error, range: [0, 3]  
+2. `error_theta` – the heading (yaw) error, range: [0,1]  
 
 Each input has **5 membership functions**:  
 - `VL` = very large 
@@ -77,7 +77,7 @@ Each input has **5 membership functions**:
 - `S` = Small  
 - `VS` = very small
 
-And outputs are the LQR weights:  
+And outputs are the LQR scalor weight Q0 and R0:  
 -`R` – weight for control input, range: [0.1, 10]  
 -`Q` – weight for state error, range: [10, 100]  
 
